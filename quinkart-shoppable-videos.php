@@ -206,28 +206,53 @@ function quinkart_shoppable_reels() {
             });
         });
     </script>
-    <!-- ------------------------------------------BACKEND PROCESS---------------------------------------------- -->
-    
- 
-    <?php
-    return ob_get_clean();
+     <?php return ob_get_clean();
 }
+   // ------------------------------------------BACKEND PROCESS----------------------------------------------
 
 // Hook to add admin menu
 add_action('admin_menu', 'qsv_add_admin_menu');
 
 function qsv_add_admin_menu() {
     add_menu_page(
-        'QuinKart Shoppable Videos',      // Page title
-        'Shoppable Videos',              // Menu title
-        'manage_options',                // Capability
-        'quinkart_shoppable_videos',     // Slug
-        'qsv_display_dashboard',         // Callback function
-        'dashicons-video-alt3',          // Icon
-        6                                // Position
+        'QuinKart Shoppable Videos',
+        'Shoppable Videos',
+        'manage_options',
+        'quinkart_shoppable_videos',
+        'quinkart_shoppable_videos_dashboard',
+        'dashicons-video-alt3',
+        6
     );
 }
 
 // Include dashboard display function
 require_once plugin_dir_path(__FILE__) . 'admin/admin-dashboard.php';
+require_once plugin_dir_path(__FILE__) . 'includes/video-functions.php';
 
+function quinkart_shoppable_videos_dashboard() {
+?>
+    <div class="wrap">
+        <h2>QuinKart Shoppable Videos - Manage Videos</h2>
+        
+        <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" enctype="multipart/form-data">
+            <input type="hidden" name="action" value="quinkart_upload_video">
+            <label for="video_file">Upload Video (MP4, MOV):</label>
+            <input type="file" name="video_file" accept="video/mp4,video/mov" required>
+            <button type="submit">Upload</button>
+        </form>
+
+        <h3>Uploaded Videos</h3>
+        <ul>
+            <?php 
+            $videos = quinkart_get_all_videos(); 
+            foreach ($videos as $video) {
+                echo "<li>" . esc_html($video->video_url) . "</li>";
+            }
+            ?>
+        </ul>
+    </div>
+    <?php
+}
+
+register_activation_hook(__FILE__, 'quinkart_create_video_table');
+?>

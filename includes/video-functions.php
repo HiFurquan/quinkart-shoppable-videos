@@ -1,35 +1,21 @@
-<!-- Functions for video CRUD operations -->
 <?php
-// Fetch reels for frontend
-function qsv_get_reels() {
-    $args = [
-        'post_type'      => 'qsv_reels',
-        'posts_per_page' => -1,
-        'orderby'        => 'date',
-        'order'          => 'DESC',
-    ];
-
-    $query = new WP_Query($args);
-    $reels = [];
-
-    if ($query->have_posts()) {
-        while ($query->have_posts()) {
-            $query->the_post();
-            $reels[] = [
-                'video_url'     => get_field('video_url'),
-                'product_title' => get_field('product_title'),
-                'price'         => get_field('price'),
-                'discount'      => get_field('discount'),
-                'rating'        => get_field('rating'),
-                'wishlist_count'=> get_field('wishlist_count'),
-                'share_count'   => get_field('share_count'),
-                'product_url'   => get_permalink(get_field('linked_product')),
-            ];
+function quinkart_upload_video() {
+    if (!empty($_FILES['video_file']['name'])) {
+        $uploaded_file = $_FILES['video_file'];
+        $upload_dir = wp_upload_dir();
+        $target_file = $upload_dir['path'] . '/' . basename($uploaded_file['name']);
+        
+        if (move_uploaded_file($uploaded_file['tmp_name'], $target_file)) {
+            global $wpdb;
+            $table_name = $wpdb->prefix . 'quinkart_videos';
+            $wpdb->insert($table_name, array(
+                'video_url' => $target_file,
+                'created_at' => current_time('mysql'),
+            ));
         }
     }
-    wp_reset_postdata();
-    wp_send_json_success($reels);
+    wp_redirect(admin_url('admin.php?page=quinkart_shoppable_videos'));
+    exit();
 }
-
-add_action('wp_ajax_qsv_get_reels', 'qsv_get_reels');
-add_action('wp_ajax_nopriv_qsv_get_reels', 'qsv_get_reels');
+add_action('admin_post_quinkart_upload_video', 'quinkart_upload_video');
+?>
