@@ -1,75 +1,59 @@
-.qsv-reel {
-    position: relative;
-    height: 100vh;
+#qsv-reels-container {
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-    scroll-snap-align: start;
+    gap: 20px;
+    padding: 10px;
+}
+
+.qsv-reel {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+    overflow: hidden;
+    border-radius: 10px;
 }
 
 .qsv-reel video {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 12px;
+    height: auto;
+    border-radius: 10px;
 }
 
-.qsv-buttons {
+.qsv-controls {
     position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
+    bottom: 10px;
+    left: 10px;
+    width: calc(100% - 20px);
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.qsv-btn {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    border: none;
-    display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    font-size: 20px;
-    cursor: pointer;
-    background-color: #fff;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease;
 }
 
-.qsv-btn:hover {
-    transform: scale(1.1);
+.qsv-speaker {
+    background: rgba(0,0,0,0.5);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 .qsv-product-info {
-    width: 100%;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.9);
-    text-align: center;
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: left;
+    font-size: 14px;
 }
 
-.qsv-product-title {
-    font-size: 18px;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 10px;
-}
-
-.order-btn {
-    width: 100%;
-    padding: 12px;
-    font-size: 20px;
+.qsv-order-btn {
+    display: inline-block;
+    background: #ff4b5c;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    text-decoration: none;
     font-weight: bold;
-    background-color: #FF4081;
-    color: #fff;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.order-btn:hover {
-    background-color: #E91E63;
+    margin-top: 5px;
 }
